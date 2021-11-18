@@ -16,21 +16,28 @@ const subTaskSchema = new Schema({
   }
 })
 
-const taskSchema = new Schema({
-  'task_name': {
-    type: String,
-    required: true,
+const taskSchema = new Schema(
+  {
+    'task_name': {
+      type: String,
+      required: true,
+    },
+    'overall_status': {
+      type: String,
+      enum: ['pending', 'complete'],
+      default: 'pending'
+    },
+    sub_tasks: [subTaskSchema],
+    'visibility': {
+      type: Boolean,
+      default: true,
+    },
   },
-  'overall_status': {
-    type: String,
-    enum: ['pending', 'complete'],
-    default: 'pending'
-  },
-  sub_tasks: [subTaskSchema],
-  'visibility': {
-    type: Boolean,
-    default: true,
-  },
-});
+  {
+    timestamps: true,
+    autoIndex: true,
+    versionKey: false
+  }
+);
 
 module.exports = mongoose.model('tasks', taskSchema);
