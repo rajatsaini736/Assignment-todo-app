@@ -3,7 +3,7 @@ module.exports = {
 
   async getAllTasks(req, res) {
     try {
-      let tasks = await TASK.find({ visibility: true });
+      let tasks = await TASK.find({ visibility: true }).lean();
       res.json({ success: true, data: tasks })
     } catch (err) {
       console.log(err);
@@ -18,7 +18,7 @@ module.exports = {
     //   "task_name": "task-1"
     // }
     try {
-      let {task_name} = req.body;
+      let { task_name } = req.body;
       let taskResponse = await TASK.create({ task_name });
       
       res.json({ success: true, data: taskResponse });
@@ -43,9 +43,9 @@ module.exports = {
     //   "overall_status": "complete" 
     // }
     try {
-      let {taskId} = req.params;
+      let { taskId } = req.params;
       let reqBody = req.body;
-      let updatedTask = await TASK.findOneAndUpdate(taskId, reqBody, { new: true });
+      let updatedTask = await TASK.findByIdAndUpdate(taskId, reqBody, { new: true });
 
       res.json({ success: true, data: updatedTask });
     } catch (err) {
@@ -59,8 +59,8 @@ module.exports = {
     //
     // taskId = 6196254deb8b080aae19fd20
     try {
-      let {taskId} = req.params;
-      let deletedTask = await TASK.findOneAndUpdate(taskId, { 'visibility': 'false' }, { new: true });
+      let { taskId } = req.params;
+      let deletedTask = await TASK.findByIdAndUpdate(taskId, { 'visibility': 'false' }, { new: true });
 
       res.json({ success: true, data: deletedTask });
     } catch (err) {

@@ -9,6 +9,7 @@ const subTaskSchema = new Schema({
   'status': {
     type: String,
     enum: ['pending', 'complete'],
+    default: 'pending'
   },
   'visibility': {
     type: Boolean,
