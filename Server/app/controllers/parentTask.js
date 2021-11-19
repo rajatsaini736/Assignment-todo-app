@@ -3,7 +3,35 @@ module.exports = {
 
   async getAllTasks(req, res) {
     try {
-      let tasks = await TASK.find({ visibility: true }).lean();
+      let taskQuery = [
+        {
+          $match: { 'visibility': true }
+        },
+        {
+          $unwind: {
+              path: '$sub_tasks',
+              preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $match: {
+              $or: [
+                { 'sub_tasks': { $exists: false } }, 
+                { 'sub_tasks.visibility': true }
+              ]
+          }
+        },
+        {
+          $group: {
+              _id: '$_id',
+              task_name: { $first: '$task_name' },
+              overall_status: { $first: '$overall_status' },
+              visibility: { $first: '$visibility' },
+              sub_tasks: { $push: '$sub_tasks' }
+          }
+        }
+      ];
+      let tasks = await TASK.aggregate(taskQuery);
       res.json({ success: true, data: tasks })
     } catch (err) {
       console.log(err);
