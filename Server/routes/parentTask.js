@@ -6,7 +6,10 @@ const parentTaskController = require('../app/controllers/parentTask');
 // *****   PARENT TASKS ROUTES    *****
 
 // Get all parent tasks
-router.get('/', parentTaskController.getAllTasks);
+router.get(
+  '/', 
+  parentTaskController.getAllTasks
+);
 
 // Get a parent task
 // router.get('/:taskId', parentTaskController.)
