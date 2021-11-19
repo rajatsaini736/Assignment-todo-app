@@ -3,11 +3,11 @@ const TASK = require("../models/task");
 module.exports = {
 
   async postNewSubTask(req, res) {
-    // Request Parameters
+    // *** Request Parameters ***
     //
     // parentTaskId = 6196254deb8b080aae19fd20
 
-    // Request Body Formate
+    // *** Request Body Formate ***
     //
     // reqBody = {
     //   "subTask_name": "task-1"
@@ -31,11 +31,11 @@ module.exports = {
   }, 
 
   async updateSubTask(req, res) {
-    // Request Parameters
+    // *** Request Parameters ***
     //
     // parentTaskId = 6196254deb8b080aae19fd20
 
-    // Request Body Formate
+    // *** Request Body Formate ***
     //
     // reqBody = {
     //   "subTaskId": 6196254deb8b080aae19fd20
@@ -71,7 +71,7 @@ module.exports = {
   },
 
   async deleteSubTask(req, res) {
-    // Request Parameters
+    // *** Request Parameters ***
     //
     // parentTaskId = 6196254deb8b080aae19fd20
     // subTaskId = 619635d11d762902d019e8f4
