@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './components/home/home.component';
-import  {ButtonsModule} from 'ngx-bootstrap/buttons'
 import { TaskService } from './services/task.service';
 @NgModule({
   declarations: [
@@ -13,7 +12,6 @@ import { TaskService } from './services/task.service';
     HomeComponent
   ],
   imports: [
-    ButtonsModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

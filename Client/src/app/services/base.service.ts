@@ -6,13 +6,12 @@ export class BaseService {
 
   constructor() { }
 
-  extractDataPromise(res: any) {
-    let body = res.json();
-    return body.data || {};
+  extractDataPromise(res: { success: boolean, data: any }) {
+    return res.data || {};
   }
 
   handleCatchErrorPromise(error: any) {
-    let body = error.json();
-    return body;
+    console.log(error);
+    return error;
   }
 }

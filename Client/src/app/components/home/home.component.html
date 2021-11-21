@@ -1,2 +1,50 @@
-<p>home works!</p>
-<button class="btn btn-success">submit</button>
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6 mx-auto text-center">
+            <div class="row p-3">
+                <div class="col-md-6">
+                    <input type="text" placeholder="Enter task name" (input)="inputParentTaskName($event)" (focusOut)="parentTaskName = ''">
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-primary" (click)="createNewTask()" [disabled]="isNewParentTaskDisable()">Add</button>
+                </div>
+            </div>
+            <div class="accordion my-3" id="accordionExample" *ngIf="!isLoader">
+                <div class="accordion-item" (click)="toggleAccor(i)" *ngFor="let parentTask of myTasks; let i = index">
+                    <div class="row pl-3">
+                        <div class="col-md-2 text-center pt-3" style="background-color: #e7f1ff">
+                                <input type="checkbox" [checked]="isParentTaskCompleted(parentTask)" (click)="updateParentTaskStatus(parentTask, i)">
+                            </div>
+                            <div class="col-md-10">
+                                <h2 class="accordion-header" id="heading{{i}}">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" attr.data-bs-target="#collapse{{i}}" attr.aria-expanded="true" attr.aria-controls="collapse{{i}}">
+                                    {{ parentTask.task_name }}
+                                </button>
+                            </h2>
+                            </div>
+                    </div>
+                    <div id="collapse{{i}}" class="accordion-collapse collapse" [ngClass]="{'show': i == activeAccor}" attr.aria-labelledby="heading{{i}}" attr.data-bs-parent="#accordionExample">
+                      <div class="accordion-body" *ngIf="parentTask?.sub_tasks.length; else noSubTask">
+                        <ng-container *ngFor="let subTask of parentTask.sub_tasks; let j = index">
+                            <div class="p">{{ subTask.task_name }}</div>
+                        </ng-container>
+                      </div>
+                      <ng-template #noSubTask>
+                          No Sub Task Found !!
+                      </ng-template>
+                      <div class="accordian-body">
+                          <div class="row p-3">
+                              <div class="col-md-6">
+                                  <input type="text" (input)="inputSubTaskName($event)" (focusOut)="subTaskName = ''">
+                              </div>
+                              <div class="col-md-6">
+                                  <button class="btn btn-success" (click)="createNewSubTask()" [disabled]="isNewSubTaskDisable()">Add</button>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
