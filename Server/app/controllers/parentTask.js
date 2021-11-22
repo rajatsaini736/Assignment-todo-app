@@ -29,7 +29,13 @@ module.exports = {
               task_name: { $first: '$task_name' },
               overall_status: { $first: '$overall_status' },
               visibility: { $first: '$visibility' },
-              sub_tasks: { $push: '$sub_tasks' }
+              sub_tasks: { $push: '$sub_tasks' },
+              createdAt: { $first: '$createdAt' }
+          }
+        },
+        {
+          $sort: {
+            createdAt: 1
           }
         }
       ];

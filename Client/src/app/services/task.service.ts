@@ -30,4 +30,14 @@ export class TaskService {
     return this._http.put<ParentTaskResponse>(this._url + `/${taskId}`, payload )
             .toPromise();
   }
+
+  postNewSubTask(parentTaskId: string, payload: any): Promise<ParentTaskResponse> {
+    return this._http.post<ParentTaskResponse>(this._url + `/subtask/${parentTaskId}`, payload)
+            .toPromise();
+  }
+
+  updateSubTask(parentTaskId: string, payload: any): Promise<ParentTaskResponse> {
+    return this._http.put<ParentTaskResponse>(this._url + `/subtask/${parentTaskId}`, payload)
+            .toPromise();
+  }
 }

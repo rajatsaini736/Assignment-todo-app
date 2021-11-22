@@ -68,7 +68,7 @@ export class HomeComponent implements OnInit {
     let payload = { "task_name": this.parentTaskName };
     try{
       let newTask = await this._taskService.postNewParentTask(payload);    
-
+      this.parentTaskName = "";
       if (newTask.success) {
         this.myTasks.push(newTask.data);
       }
@@ -77,22 +77,58 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  updateParentTaskStatus(parentTask: ParentTask, index: number) {
+  async updateParentTaskStatus(parentTask: ParentTask, index: number) {
     let taskId = parentTask._id;
     let payload = { 
       "overall_status": parentTask.overall_status == 'complete' ? 'pending' : 'complete'
     }
 
     try {
-      let updatedTask = this._taskService.updateParentTask(payload, taskId);
-      this.myTasks[index]["overall_status"] = payload["overall_status"];
+      let updatedTaskRes = await this._taskService.updateParentTask(payload, taskId);
+      if (updatedTaskRes.success) {
+        this.myTasks[index] = updatedTaskRes.data;
+      }
     } catch (err) {
       console.log(err);
     }
   }
 
-  async createNewSubTask() {
-    console.log(this.subTaskName);
+  async createNewSubTask(parentTask: ParentTask, index: number) {
+    if (!this.subTaskName.length) return;
+
+    let parentTaskId = parentTask._id;
+    let payload = {
+      "subTask_name": this.subTaskName
+    }
+
+    try{
+      let updatedSubTaskRes = await this._taskService.postNewSubTask(parentTaskId, payload);
+      this.subTaskName = "";
+      if (updatedSubTaskRes.success) {
+        this.myTasks[index] = updatedSubTaskRes.data;
+      }
+      console.log(this.myTasks);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async updateSubTaskStatus(parentTask: ParentTask, subTask: SubTask, index: number) {
+    let parentTaskId = parentTask._id;
+    let subTaskId = subTask._id;
+    let payload = {
+      subTaskId,
+      "status": subTask.status == 'complete' ? 'pending' : 'complete'
+    }
+
+    try{
+      let updatedTaskRes = await this._taskService.updateSubTask(parentTaskId, payload);
+      if (updatedTaskRes.success) {
+        this.myTasks[index] = updatedTaskRes.data;
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   isNewParentTaskDisable(){
@@ -105,6 +141,10 @@ export class HomeComponent implements OnInit {
 
   isParentTaskCompleted(task: ParentTask) {
     return task.overall_status == 'complete';
+  }
+
+  isSubTaskCompleted(task: SubTask) {
+    return task.status == 'complete';
   }
 
   toggleAccor(i: number) {
