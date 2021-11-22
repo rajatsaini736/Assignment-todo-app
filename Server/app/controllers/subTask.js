@@ -1,4 +1,5 @@
 const TASK = require("../models/task");
+const _subTaskHelper = require("../helpers/subTask");
  
 module.exports = {
 
@@ -49,19 +50,10 @@ module.exports = {
     try {
       let { parentTaskId } = req.params;
       let { subTaskId, subTask_name, status } = req.body;
-
-      let task = await TASK.findOne({ parentTaskId });
       let updatedTask;
-      if (task.sub_tasks.length) {
-        let subTask = task.sub_tasks.find((subTask) => subTask._id == subTaskId);
 
-        if (subTask && subTask.visibility) {
-          subTask["task_name"] = subTask_name || subTask["task_name"];
-          subTask["status"] = status || subTask["status"];
-
-          updatedTask = await task.save();
-        }
-      }
+      if ( subTask_name ) updatedTask = await _subTaskHelper.updateSubTaskName(parentTaskId, subTaskId, subTask_Name);
+      if ( status ) updatedTask = await _subTaskHelper.updateSubTaskStatus(parentTaskId, subTaskId, status);
 
       res.json({ success: true, data: updatedTask });
     } catch (err) {
