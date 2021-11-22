@@ -1,4 +1,6 @@
 const TASK = require("../models/task");
+const _parentTaskHelper = require("../helpers/parentTask");
+
 module.exports = {
 
   async getAllTasks(req, res) {
@@ -73,7 +75,10 @@ module.exports = {
     try {
       let { taskId } = req.params;
       let reqBody = req.body;
-      let updatedTask = await TASK.findByIdAndUpdate(taskId, reqBody, { new: true });
+      let updatedTask;
+
+      if (reqBody["task_name"]) updatedTask = await _parentTaskHelper.updateParentTaskName(taskId, reqBody);
+      if (reqBody["overall_status"]) updatedTask = await _parentTaskHelper.updateParentTaskOverallStatus(taskId, reqBody);
 
       res.json({ success: true, data: updatedTask });
     } catch (err) {
