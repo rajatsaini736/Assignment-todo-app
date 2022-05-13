@@ -7,6 +7,7 @@ const cors = require('cors');
 
 const parentTaskRouter = require('./routes/parentTask');
 const subTaskRouter = require('./routes/subTask');
+const demoTaskRouter = require('./routes/demo');
 
 require('./config/db');
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', parentTaskRouter);
 app.use('/subtask', subTaskRouter);
+app.use('/demo', demoTaskRouter);
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {

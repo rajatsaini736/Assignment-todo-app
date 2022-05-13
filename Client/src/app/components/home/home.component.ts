@@ -4,6 +4,9 @@ import { TaskService } from 'src/app/services/task.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SubTask } from '../../models/sub-task';
 import { ParentTask } from '../../models/parent-task';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as todoActions from '../../app-state/actions';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -20,7 +23,10 @@ export class HomeComponent implements OnInit {
   subTaskName: string = '';
 
   constructor(
-    private _taskService: TaskService
+    private _taskService: TaskService,
+    private _router: Router,
+    private _store: Store,
+    private route: ActivatedRoute
   ) { }
 
   async ngOnInit() {
@@ -149,6 +155,11 @@ export class HomeComponent implements OnInit {
 
   toggleAccor(i: number) {
     this.activeAccor = i;
+  }
+
+  navigateToRoute(route) {
+    this._store.dispatch(todoActions.getTasks());
+    this._router.navigate([route], {relativeTo: this.route});
   }
 
 }
