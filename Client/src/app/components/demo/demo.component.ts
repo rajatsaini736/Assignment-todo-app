@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import * as rootReducer from '../../app-state';
 import * as todoActions from '../../app-state/actions';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { interval, of, Subject } from 'rxjs';
+import { concatAll, exhaust, exhaustMap, map, mergeAll, switchAll, switchMap, takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Task } from 'src/app/app-state/entity';
+import { TaskService, TodoService } from 'src/app/services';
 
 @Component({
   selector: 'app-demo',
@@ -26,16 +27,34 @@ export class DemoComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private readonly store: Store<{}>
+    private readonly store: Store<{}>,
+    private todoService: TodoService,
+    private _store: Store
   ) { }
 
   ngOnInit(): void {
+    // getting all tasks from server
+    this._store.dispatch(todoActions.getTasks());
+
     this.taskList$.subscribe((data) => {
       console.log(data);
       this.myTasks = data.tasks;
 
       if (data.isLoadingSuccess) this.taskName = "";
     });
+
+    let obser = interval(2000);
+
+    of('news', 'games', 'songs')
+    .pipe(
+      // map((str) => this.todoService.getTasks(str)),
+      // mergeAll(),
+      // switchAll(),
+      // exhaust(),
+      // concatAll()
+      // exhaustMap((str) => this.todoService.getTasks(str))
+    )
+    .subscribe((res) => console.log(res));
   }
 
   createNewTask() {

@@ -158,7 +158,6 @@ export class HomeComponent implements OnInit {
   }
 
   navigateToRoute(route) {
-    this._store.dispatch(todoActions.getTasks());
     this._router.navigate([route], {relativeTo: this.route});
   }
 

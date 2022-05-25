@@ -16,7 +16,8 @@ export class TodoService {
     this._url = environment.API;
    }
 
-  getTasks(): Observable<any>  {
+  getTasks(str = ""): Observable<any>  {
+    console.log(str);
     return this.http.get<any>(this._url + `/demo/tasks`);
   }
 
