@@ -17,12 +17,10 @@ export class TodoService {
    }
 
   getTasks(str = ""): Observable<any>  {
-    console.log(str);
     return this.http.get<any>(this._url + `/demo/tasks`);
   }
 
   addTask(task): Observable<any> {
-    console.log(task);
     return this.http.post<any>(this._url + `/demo/task`, task);
   }
 
@@ -31,7 +29,6 @@ export class TodoService {
   }
 
   editTak(task): Observable<any> {
-    console.log(task);
     return this.http.put<any>(this._url + `/demo/task`, task);
   }
 }

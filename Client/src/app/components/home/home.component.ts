@@ -25,7 +25,6 @@ export class HomeComponent implements OnInit {
   constructor(
     private _taskService: TaskService,
     private _router: Router,
-    private _store: Store,
     private route: ActivatedRoute
   ) { }
 

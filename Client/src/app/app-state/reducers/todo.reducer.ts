@@ -10,9 +10,6 @@ export interface State {
   currentTask?: Task;
   deleteTaskId?: any;
   result?: any;
-  isLoading?: boolean;
-  isLoadingSuccess?: boolean;
-  isLoadingFailure?: boolean;
 }
 
 export const initialState: State = {
@@ -20,35 +17,18 @@ export const initialState: State = {
   currentTask: {},
   deleteTaskId: '',
   result: '',
-  isLoading: false,
-  isLoadingSuccess: false,
-  isLoadingFailure: false
 }
 
 const todoReducer = createReducer(
   initialState,
-
-  // GetTasks
-  on(todoActions.getTasks, (state) => ({
-    ...state,
-    isLoading: true
-  })),
   on(todoActions.getTasksSuccess, (state, result) => ({
     ...state,
-    isLoading: false,
-    isLoadingSuccess: true,
     tasks: result.response
-  })),
-  on(todoActions.getTasksFailure, (state) => ({
-    ...state,
-    isLoading: false,
-    isLoadingFailure: true,
   })),
 
   // Create Task Reducer
   on(todoActions.createTask, (state, {task}) => ({
     ...state,
-    isLoading: true,
     currentTask: task
   })),
   on(todoActions.createTaskSuccess, (state, result) => {
@@ -58,21 +38,16 @@ const todoReducer = createReducer(
     tasks.push(currentTask);
     return {
       tasks,
-      isLoading: false,
-      isLoadingSuccess: true
     }
   }),
   on(todoActions.createTaskFailure, (state, result) => ({
     ...state,
-    isLoading: false,
-    isLoadingFailure: true,
     result
   })),
  
   // Delete Task Reducers
   on(todoActions.deleteTask, (state, { taskId }) => ({
     ...state,
-    isLoading: true,
     deleteTaskId: taskId
   })),
   on(todoActions.deleteTaskSuccess, (state, result) => {
@@ -128,7 +103,5 @@ export function reducer(state: State | undefined, action: Action): any {
 export const getTasks = (state: State) => {
   return {
     tasks: state.tasks,
-    isLoading: state.isLoading,
-    isLoadingSuccess: state.isLoadingSuccess
   };
 };

@@ -1,11 +1,11 @@
 <div class="col">
-  <button class="btn btn-primary" (click)="navigateTo('home')">Back</button>
+  <button class="btn btn-primary" (click)="navigateTo('home')">< Back</button>
 </div>
 <div class="container mt-0 mb-5 mx-auto">
   <div class="row">
     <div class="col mx-auto text-center">
       <h2>Todo By NGRX / RXJS</h2>
-      <p>Developed by Rajat in practice sessions</p>
+      <p>Developed with Rajat's brilliance</p>
       <!-- <div class="col-md-5 mx-auto text-start" style="padding-left: 5.5rem;">
         <p>* Backend is on local</p>
         <p>* Initially few tasks stored in Backend</p>
@@ -15,10 +15,10 @@
 </div>
 <div class="container my-5">
   <div class="row">
-      <div class="col-md-6 mx-auto text-center">
+      <div class="col-md-6 mx-auto">
           <div class="row p-3 justify-content-center">
               <div class="col-md-6">
-                  <input type="text" placeholder="Enter task name" [(ngModel)]="taskName">
+                  <input class="my-1" type="text" placeholder="Enter task name" [(ngModel)]="taskName">
               </div>
               <div class="col-md-2">
                   <button class="btn btn-primary" (click)="createNewTask()" [disabled]="isNewTaskDisable()">Add</button>

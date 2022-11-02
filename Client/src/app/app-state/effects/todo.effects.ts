@@ -19,7 +19,6 @@ export class TodoEffects {
       exhaustMap(() => 
         this.todoService.getTasks().pipe(
           map(response => {
-            console.log("response:::", response);
             return todoActions.getTasksSuccess({ response });
           }),
           catchError((error: any) => of(todoActions.getTasksFailure(error)))

@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import * as rootReducer from '../../app-state';
 import * as todoActions from '../../app-state/actions';
 import { interval, of, Subject } from 'rxjs';
-import { concatAll, exhaust, exhaustMap, map, mergeAll, switchAll, switchMap, takeUntil } from 'rxjs/operators';
+import { concatAll, exhaust, exhaustMap, map, mergeAll, switchAll, switchMap, take, takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Task } from 'src/app/app-state/entity';
 import { TaskService, TodoService } from 'src/app/services';
@@ -21,6 +21,16 @@ export class DemoComponent implements OnInit {
     takeUntil(this.unsubscribe$)
   ); 
 
+  public userTask$ = this.store.pipe(
+    select(rootReducer.getUserAndTask),
+    takeUntil(this.unsubscribe$)
+  );
+
+  public todoStatus$ = this.store.pipe(
+    select(rootReducer.getTodoStatus),
+    takeUntil(this.unsubscribe$)
+  );
+
   public taskName: string = "";
   public currUser: string;
   myTasks: Task[] = [];
@@ -37,24 +47,29 @@ export class DemoComponent implements OnInit {
     this._store.dispatch(todoActions.getTasks());
 
     this.taskList$.subscribe((data) => {
-      console.log(data);
       this.myTasks = data.tasks;
+    });
 
+    this.todoStatus$.subscribe((data: TodoStatus) => {
       if (data.isLoadingSuccess) this.taskName = "";
+    })
+
+    this.userTask$.subscribe((data) => {
+      console.log(data);
     });
 
     let obser = interval(2000);
 
-    of('news', 'games', 'songs')
-    .pipe(
-      // map((str) => this.todoService.getTasks(str)),
-      // mergeAll(),
-      // switchAll(),
-      // exhaust(),
-      // concatAll()
-      // exhaustMap((str) => this.todoService.getTasks(str))
-    )
-    .subscribe((res) => console.log(res));
+    // of('news', 'games', 'songs')
+    // .pipe(
+    //   // map((str) => this.todoService.getTasks(str)),
+    //   // mergeAll(),
+    //   // switchAll(),
+    //   // exhaust(),
+    //   // concatAll()
+    //   // exhaustMap((str) => this.todoService.getTasks(str))
+    // )
+    // .subscribe((res) => console.log(res));
   }
 
   createNewTask() {
@@ -70,7 +85,6 @@ export class DemoComponent implements OnInit {
   }
 
   editTask(prevTask: Task) {
-    console.log('Task editing ...');
     let taskName = prompt("Please enter task name", "Learn Killing Curse");
 
     if (!taskName) return;
@@ -83,7 +97,6 @@ export class DemoComponent implements OnInit {
   }
 
   deleteTask(taskId) {
-    console.log('delete task clicked');
     this.store.dispatch(todoActions.deleteTask({taskId}));
   }
 
@@ -106,4 +119,10 @@ export class DemoComponent implements OnInit {
     this.unsubscribe$.next(true);
     this.unsubscribe$.complete();
   }
+}
+
+interface TodoStatus {
+  isLoading?: boolean;
+  isLoadingSuccess?: boolean;
+  isLoadingFailure?: boolean;
 }
